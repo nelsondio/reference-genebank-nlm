@@ -20,8 +20,8 @@ for i, l in enumerate(lines):
 #        print(i )
 #        print(l)
         print(l + hashlib.md5(l.encode()).hexdigest() )
-        build += l 
-        build += hashlib.md5(l.encode()).hexdigest() + '\n'
+#        build += l 
+        build += hashlib.md5(l.encode()).hexdigest() 
         count += 1
     elif i <  symbolArr[1] :
         buildFasta += l
@@ -31,17 +31,17 @@ for i, l in enumerate(lines):
 #        print(buildFasta)
         print( hashlib.md5(buildFasta.encode()).hexdigest() )
 #        print(len(buildFasta))
-        build += buildFasta
-        build += hashlib.md5(buildFasta.encode()).hexdigest() + '\n'
-        build = str(len(buildFasta)) + '\n'
+#        build += buildFasta
+        build += " " + hashlib.md5(buildFasta.encode()).hexdigest() + '\n'
+#        build = str(len(buildFasta)) + '\n'
         buildFasta = ""
 
     elif l[0] == '>':
 #        print("##############")
-        build += l 
-        build += (hashlib.md5(l.encode()).hexdigest() ) + '\n'
-        build += (hashlib.md5(buildFasta.encode()).hexdigest() ) + '\n'
-        build += str(len(buildFasta)) + '\n'
+#        build += l 
+        build += (hashlib.md5(l.encode()).hexdigest() ) 
+        build += " " + (hashlib.md5(buildFasta.encode()).hexdigest() ) + '\n'
+#        build += str(len(buildFasta)) + '\n'
         print(l + hashlib.md5(l.encode()).hexdigest() )
 #        print(hashlib.md5(l.encode()).hexdigest() )
 #        print(len(build))
@@ -84,8 +84,9 @@ CTTGTGGACTTTTGGGACACGGCAGGCCAGGAGCGGTTCCAGAGCATGCATGCCTCCTACTACCACAAGG
 CCCACGCCTGCATCATGGCCCTGCTTCAATGCCACCACCTCCGTGCAGCCTCCTCTGATGTTTGTCATTA
 G
 '''
-#print(build)
-print(symbolArr)
+print("=======================")
+print(build)
+#print(symbolArr)
 
 print(hashlib.md5(onesequence.encode()).hexdigest())
 print(hashlib.md5(twosequence.encode()).hexdigest())

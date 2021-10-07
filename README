@@ -1,0 +1,13 @@
+read-gb-fasta-nucle.py
+README
+ttest.py
+
+10.07.2021
+git init
+master
+======== I had issues with md5 values with slightly different versions of the initial script
+======== I am testing the fasta length (len()), how the new line char are treated, consiering the possibility to delete the new line char or to process fasta as it is, which is 60 char lenght. Still unsure how the last line is processed. 
+======== Also, I started the git project to keep track of changes. Before today I just saved separate files.
+======== run tail -250 sequence-homo-38-chr22-coding-nucl.txt and then added a few lines missing from the last record. It output 18 records, made a copy on the server to be able to watch on a web page. 
+
+

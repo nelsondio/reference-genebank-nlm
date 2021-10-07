@@ -10,4 +10,6 @@ master
 ======== Also, I started the git project to keep track of changes. Before today I just saved separate files.
 ======== run tail -250 sequence-homo-38-chr22-coding-nucl.txt and then added a few lines missing from the last record. It output 18 records, made a copy on the server to be able to watch on a web page. 
 
+===== current version of ttest.py has print as well as build statements. The first record is a problem. Print statements are correct, but build output is missing the first record to no avail. I will commit and pipe the output to a file. build output is commented out
+
 

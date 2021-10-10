@@ -40,7 +40,7 @@ for i, l in enumerate(lines):
     else:
         buildFasta += l
 print('==================')
-fo = open("test-fasta-9-records.txt.out.txt", "w")
+fo = open("short.out.txt", "w")
 fo.write(build)
 fo.close()
 #print(build)

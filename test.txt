@@ -1,1 +1,1 @@
-test-fasta-3-records.txt
+test-fasta-9-records.txt

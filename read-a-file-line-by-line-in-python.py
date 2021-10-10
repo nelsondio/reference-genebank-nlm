@@ -15,17 +15,21 @@ def main():
        build = ""
        for i, line in enumerate(fp):
             if isFirst(i, line):
-                print(line.strip())
+                print(line)
+                #print(line.strip())
                 print(getHash(i,line))
             elif not isAngle(i,line):
-               build += line.strip()
+               build += line
+               #build += line.strip()
                print("{} ::: {}".format(i, len(build)))
                if i == numberOfLines-1:
                    print(getHash(i,build))
             elif isAngle(i, line):
+                print(build) #TODELETE
                 print(getHash(i,build))
                 build = ""
-                print(line.strip())
+                print(line)
+                #print(line.strip())
                 print(getHash(i, line))
             else:
                 print('######')

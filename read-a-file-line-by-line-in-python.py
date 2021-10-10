@@ -8,8 +8,10 @@ def main():
    if not os.path.isfile(filepath):
        print("File path {} does not exist. Exiting...".format(filepath))
        sys.exit()
-  
+   numberOfLines = countLines(filepath)
+   
    with open(filepath) as fp:
+       print('=============================================')
        build = ""
        for i, line in enumerate(fp):
             if isFirst(i, line):
@@ -18,13 +20,18 @@ def main():
             elif not isAngle(i,line):
                build += line.strip()
                print("{} ::: {}".format(i, len(build)))
+               if i == numberOfLines-1:
+                   print(getHash(i,build))
             elif isAngle(i, line):
                 print(getHash(i,build))
                 build = ""
                 print(line.strip())
                 print(getHash(i, line))
             else:
+                print('######')
                 print(i)
+                if isLast(i,line):
+                    print("is last")
 
 
 
@@ -36,7 +43,14 @@ def main():
            record_word_cnt(line.strip().split(' '), bag_of_words)
    sorted_words = order_bag_of_words(bag_of_words, desc=True)
    print("Most frequent 10 words {}".format(sorted_words[:10]))
-  
+
+def countLines(filepath):
+    fo = open(filepath, 'r').readlines()
+    return len(fo)
+    
+def isLast(i, line):
+    return True
+
 def getHash(i, labelOrFasta):
     print(i)
     return hashlib.md5(labelOrFasta.encode()).hexdigest()

@@ -1,5 +1,5 @@
  # https://stackabuse.com/read-a-file-line-by-line-in-python
- 
+import hashlib 
 import sys
 import os
 
@@ -14,12 +14,15 @@ def main():
        for i, line in enumerate(fp):
             if isFirst(i, line):
                 print(line.strip())
+                print(getHash(i,line))
             elif not isAngle(i,line):
                build += line.strip()
                print("{} ::: {}".format(i, len(build)))
             elif isAngle(i, line):
+                print(getHash(i,build))
                 build = ""
                 print(line.strip())
+                print(getHash(i, line))
             else:
                 print(i)
 
@@ -34,6 +37,10 @@ def main():
    sorted_words = order_bag_of_words(bag_of_words, desc=True)
    print("Most frequent 10 words {}".format(sorted_words[:10]))
   
+def getHash(i, labelOrFasta):
+    print(i)
+    return hashlib.md5(labelOrFasta.encode()).hexdigest()
+
 def isAngle(i, line):
     if line[0] == ">":
         return True

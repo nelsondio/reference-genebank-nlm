@@ -10,11 +10,15 @@ def main():
        sys.exit()
   
    with open(filepath) as fp:
-       
+       build = ""
        for i, line in enumerate(fp):
             if isFirst(i, line):
                 print(line.strip())
+            elif not isAngle(i,line):
+               build += line.strip()
+               print("{} ::: {}".format(i, len(build)))
             elif isAngle(i, line):
+                build = ""
                 print(line.strip())
             else:
                 print(i)

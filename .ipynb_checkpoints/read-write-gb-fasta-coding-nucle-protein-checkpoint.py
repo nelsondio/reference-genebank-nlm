@@ -3,13 +3,14 @@ import sys      # this is the latest version. PENDING PENDING pass the key to ca
 import os #  the sorting. list.sort() different from sorted() or dict(sorted(d))
 from collections import Counter
 import matplotlib.pylab as plt
-def main():     # chr22 sorted using fastaMd5 as sorting key
-    myPath = './from-ftp-ensemble/'
-    symLink = 'SEQUENCE_HOMO38/'
-    myFile =  'sequence-homo-38-chr1-coding-nucleotides.txt'
-    filepath = myPath + symLink + myFile
+def main():     #  chr22 changed to chromosome sorted using fastaMd5 as sorting key
+    myPath = '../'
+    hardLink = 'SEQUENCE_HOMO38/'
+    myFile =  'sequence-homo-38-chr1-coding-protein.txt'
+    outpath = hardLink + 'OUPUT/' + myFile 
+    filepath = myPath + hardLink + myFile
     #sys.argv[1]
-    chr22 = {}
+    chromosome = {}
     if not os.path.isfile(filepath):
         print("File path {} does not exist. Exiting...".format(filepath))
         sys.exit()
@@ -34,7 +35,7 @@ def main():     # chr22 sorted using fastaMd5 as sorting key
                 buildFastaMd5 = getHash(i, buildFasta)
                 dictObj = {'label':buildLabel,'labelMd5':buildLabelMd5,'fastaMd5':buildFastaMd5 }
                 tmp =  buildLabelMd5
-                chr22.update({tmp:dictObj})
+                chromosome.update({tmp:dictObj})
                 buildFasta = ""
                 buildFastaMd5 = ""
                 buildLabel = ""
@@ -44,33 +45,33 @@ def main():     # chr22 sorted using fastaMd5 as sorting key
             else:
                 print('######')
  
-        fo = open(myPath + myFile + ".dict.out", 'w')
-        #fo.write(displayDictDataItems(chr22))
+        fo = open(myFile + ".dict.out", 'w')
+        #fo.write(displayDictDataItems(chromosome))
         #fo.close()
     #print(line.strip()) if isFirst(i, line)  else print(i)  TERNARY IF no questionMark\n",
-        #print(chr22.keys())
-        newDict = dict(sorted(chr22.items(), key=lambda t:t[1]['fastaMd5'], reverse=False))
+        #print(chromosome.keys())
+        newDict = dict(sorted(chromosome.items(), key=lambda t:t[1]['fastaMd5'], reverse=False))
         #print(newDict.keys())
-        fo.write(displayDictDataItems(newDict))
+        fo.write(displayDictDataItems(chromosome))
         fo.close()
-        countDups = countDuplicates(chr22)
+        countDups = countDuplicates(chromosome)
         #print(countDups)
-        displayBar(countDups, myPath, myFile)
+        displayBar(countDups, filepath)
         #countSortedDups = countDuplicates(newDict)
         #displayBar(countSortedDups) # sorted based on hash value, not on number of dups
 
-def displayBar(data, myPath, myFile):
+def displayBar(data, filepath):
     names = list(data.keys())
     shortName = shortenName(names)
     values = list(data.values())
     fig, ax = plt.subplots(figsize=(20,10))
     plt.xlabel('Key fastaMd5')
     plt.ylabel('Value dupiclates')
-    plt.title('Chr 1 Nucleotide')
+    plt.title('Chr 1 Protein')
 #tick_label does the some work as plt.xticks()
     #plt.bar(range(100),values,tick_label=shortName)
     plt.bar(range(len(data)),values,tick_label=shortName)
-    plt.savefig(myPath + myFile + '.png')
+    plt.savefig(filepath + '.png')
     plt.show()
     
 def shortenName(list):

@@ -1,55 +1,128 @@
-import hashlib
+import hashlib  # == generate a dictionary, this version does not wrapp in double quotes
+import sys      # this is the latest version. PENDING PENDING pass the key to carry out
+import os #  the sorting. list.sort() different from sorted() or dict(sorted(d))
+from collections import Counter
+import matplotlib.pylab as plt
+def main():     # chr22 sorted using fastaMd5 as sorting key
+    myPath = './from-ftp-ensemble/'
+    symLink = 'SEQUENCE_HOMO38/'
+    myFile =  'sequence-homo-38-chr1-coding-nucleotides.txt'
+    filepath = myPath + symLink + myFile
+    #sys.argv[1]
+    chr22 = {}
+    if not os.path.isfile(filepath):
+        print("File path {} does not exist. Exiting...".format(filepath))
+        sys.exit()
+    numberOfLines = countLines(filepath)
+    with open(filepath) as fp:
+        dictObj = {}
+        buildFasta = ""
+        buildLabel = ""
+        buildLabelMd5 = ""
+        buildFastaMd5 = ""
+        for i, line in enumerate(fp):
+            dictObj = {}
+            if isFirst(i, line):
+                buildLabel = '"' + line.strip() + '"'
+                buildLabelMd5 = getHash(i,line)
+            elif not isAngle(i,line):
+                buildFasta += line
+               #buildFasta += line.strip()
+                if i == numberOfLines-1:
+                    buildFastaMd5 = getHash(i, buildFasta)
+            elif isAngle(i, line):
+                buildFastaMd5 = getHash(i, buildFasta)
+                dictObj = {'label':buildLabel,'labelMd5':buildLabelMd5,'fastaMd5':buildFastaMd5 }
+                tmp =  buildLabelMd5
+                chr22.update({tmp:dictObj})
+                buildFasta = ""
+                buildFastaMd5 = ""
+                buildLabel = ""
+                buildLabelMd5 = ""
+                buildLabel = '"' + line.strip() + '"'
+                buildLabelMd5 = getHash(i,line)
+            else:
+                print('######')
+ 
+        fo = open(myPath + myFile + ".dict.out", 'w')
+        #fo.write(displayDictDataItems(chr22))
+        #fo.close()
+    #print(line.strip()) if isFirst(i, line)  else print(i)  TERNARY IF no questionMark\n",
+        #print(chr22.keys())
+        newDict = dict(sorted(chr22.items(), key=lambda t:t[1]['fastaMd5'], reverse=False))
+        #print(newDict.keys())
+        fo.write(displayDictDataItems(newDict))
+        fo.close()
+        countDups = countDuplicates(chr22)
+        #print(countDups)
+        displayBar(countDups, myPath, myFile)
+        #countSortedDups = countDuplicates(newDict)
+        #displayBar(countSortedDups) # sorted based on hash value, not on number of dups
 
-myFile = 'test.txt'
-f = open(myFile)
-lines = f.readlines()
-build = ""
-buildFasta = ""
-symbolArr = []
-
-for i, l in enumerate(lines):
-    if l[0] == '>':
-        symbolArr.append(i)
-
-for i, l in enumerate(lines):
-#    print(countLines)
-    if i == 0:
-        printLabel = '"' +   l.strip() + '",'   
-        printLabelmd5 = (hashlib.md5(l.encode()).hexdigest() + ',')
-        build += '"' + l.strip() + '",' +  hashlib.md5(l.encode()).hexdigest() + ','
-        print("".format())
-    elif i <  symbolArr[1] :
-        buildFasta += l
+def displayBar(data, myPath, myFile):
+    names = list(data.keys())
+    shortName = shortenName(names)
+    values = list(data.values())
+    fig, ax = plt.subplots(figsize=(20,10))
+    plt.xlabel('Key fastaMd5')
+    plt.ylabel('Value dupiclates')
+    plt.title('Chr 1 Nucleotide')
+#tick_label does the some work as plt.xticks()
+    #plt.bar(range(100),values,tick_label=shortName)
+    plt.bar(range(len(data)),values,tick_label=shortName)
+    plt.savefig(myPath + myFile + '.png')
+    plt.show()
+    
+def shortenName(list):
+    shortNameList = []
+    for n in list:
+        tmp = n[:6]
+        shortNameList.append(tmp)
+    return shortNameList
         
-    elif i == symbolArr[1]:
-        printFasta = (buildFasta)
-        printFastamd5= ( hashlib.md5(buildFasta.encode()).hexdigest() + '\n')
-        print("{}{}{}".format(printLabel, printLabelmd5, printFastamd5))
-        build += hashlib.md5(buildFasta.encode()).hexdigest() + '\n'
-        buildFasta = ""
 
-    elif l[0] == '>':
-        #print("##############")
-        build +=  '"' + l.strip() + '",' + hashlib.md5(l.encode()).hexdigest()  + ','
-        build += (hashlib.md5(buildFasta.encode()).hexdigest() ) + '\n'
-        printLabel = '"' + (l.strip()) + '",'
-        printLabelmd5 = hashlib.md5(l.encode()).hexdigest() + ',' 
-        printFastamd5 =  hashlib.md5(buildFasta.encode()).hexdigest()  + '\n'
-        print("{}{}{}".format(printLabel, printLabelmd5, printFastamd5))
-        buildFasta = ""
+        
+def countDuplicates(d):
+    out = []
+    #cnt = Counter()
+    for h in d.values():
+        out.append(h['fastaMd5'])
+    print(type(out))
+    dictOfElems = dict(Counter(out))
+    return dictOfElems
+
+def displayDictDataItems(d):
+    out = ""
+    for i,j in d.items():
+        out += str(j['labelMd5']) + '\t' + str(j['fastaMd5']) + '\n'
+    return out
+def saveFile(build):
+    fo = open('test-fasta-9-records.txt.out', 'w') #this saveFile is not working
+    fo.write("this is a test")
+    fo.close()
+def countLines(filepath):
+    fo = open(filepath, 'r').readlines()
+    return len(fo)
+def isLast(i, line):
+    return True
+def getHash(i, labelOrFasta):
+#    print(i)
+    return hashlib.md5(labelOrFasta.encode()).hexdigest()
+def isAngle(i, line):
+    if line[0] == ">":
+        return True
     else:
-        buildFasta += l
-print('==================')
-fo = open("short.out.txt", "w")
-fo.write(build)
-fo.close()
-#print(build)
-print(symbolArr)
+        return False
+def isFirst( i, line):
+    if i == 0:
+       return True
 
-'''
-for i, l in enumerate(lines):
-    print("Line {}: {}".format(i, l.strip()))
+def displayFastaMd5(d):
+    fastaMd5List = []
+    for i in d.values():
+        fastaMd5List.append((i['fastaMd5']))
+    return fastaMd5List
 
-'''
-f.close()
+if __name__ == '__main__':
+    main()
 

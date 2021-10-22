@@ -6,7 +6,15 @@ import matplotlib.pylab as plt
 def main():     #  chr22 changed to chromosome sorted using fastaMd5 as sorting key
     myPath = '../'
     hardLink = 'SEQUENCE_HOMO38/'
+    myFile =  'sequence-homo-38-chr2-coding-nucleotides.txt'
+    myFile =  'sequence-homo-38-chr1-coding-nucleotides.txt'
     myFile =  'sequence-homo-38-chr1-coding-protein.txt'
+    myFile =  'sequence-homo-38-chr5-coding-protein.txt'
+    myFile =  'sequence-homo-38-chr5-coding-nucleotides.txt'
+    myFile =  'sequence-homo-38-chr4-coding-protein.txt'
+    myFile =  'sequence-homo-38-chr4-coding-nucleotides.txt'
+    myFile =  'sequence-homo-38-chr3-coding-protein.txt'
+    myFile =  'sequence-homo-38-chr3-coding-nucleotides.txt'
     outpath = hardLink + 'OUPUT/' + myFile 
     filepath = myPath + hardLink + myFile
     #sys.argv[1]
@@ -67,7 +75,7 @@ def displayBar(data, filepath):
     fig, ax = plt.subplots(figsize=(20,10))
     plt.xlabel('Key fastaMd5')
     plt.ylabel('Value dupiclates')
-    plt.title('Chr 1 Protein')
+    plt.title(filepath)
 #tick_label does the some work as plt.xticks()
     #plt.bar(range(100),values,tick_label=shortName)
     plt.bar(range(len(data)),values,tick_label=shortName)

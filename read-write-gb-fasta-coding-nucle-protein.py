@@ -1,9 +1,10 @@
-import hashlib  # == generate a dictionary, this version does not wrapp in double quotes
-import sys      # this is the latest version. PENDING PENDING pass the key to carry out
-import os #  the sorting. list.sort() different from sorted() or dict(sorted(d))
+import hashlib  
+import sys      
+import os 
 from collections import Counter
 import matplotlib.pylab as plt
-def main():     #  chr22 changed to chromosome sorted using fastaMd5 as sorting key
+
+def main():     
     myPath = '../'
     hardLink = 'SEQUENCE_HOMO38/'
     myFile =  'sequence-homo-38-chr2-coding-nucleotides.txt'
@@ -15,7 +16,7 @@ def main():     #  chr22 changed to chromosome sorted using fastaMd5 as sorting 
     myFile =  'sequence-homo-38-chr4-coding-nucleotides.txt'
     myFile =  'sequence-homo-38-chr3-coding-protein.txt'
     myFile =  'sequence-homo-38-chr3-coding-nucleotides.txt'
-    outpath = hardLink + 'OUPUT/' + myFile 
+    outpath = myPath + hardLink + 'OUPUT/' + myFile 
     filepath = myPath + hardLink + myFile
     #sys.argv[1]
     chromosome = {}
@@ -39,6 +40,9 @@ def main():     #  chr22 changed to chromosome sorted using fastaMd5 as sorting 
                #buildFasta += line.strip()
                 if i == numberOfLines-1:
                     buildFastaMd5 = getHash(i, buildFasta)
+                    dictObj = {'label':buildLabel,'labelMd5':buildLabelMd5,'fastaMd5':buildFastaMd5 }
+                    tmp =  buildLabelMd5
+                    chromosome.update({tmp:dictObj})
             elif isAngle(i, line):
                 buildFastaMd5 = getHash(i, buildFasta)
                 dictObj = {'label':buildLabel,'labelMd5':buildLabelMd5,'fastaMd5':buildFastaMd5 }
@@ -54,19 +58,10 @@ def main():     #  chr22 changed to chromosome sorted using fastaMd5 as sorting 
                 print('######')
  
         fo = open(myFile + ".dict.out", 'w')
-        #fo.write(displayDictDataItems(chromosome))
-        #fo.close()
-    #print(line.strip()) if isFirst(i, line)  else print(i)  TERNARY IF no questionMark\n",
-        #print(chromosome.keys())
-        newDict = dict(sorted(chromosome.items(), key=lambda t:t[1]['fastaMd5'], reverse=False))
-        #print(newDict.keys())
         fo.write(displayDictDataItems(chromosome))
         fo.close()
         countDups = countDuplicates(chromosome)
-        #print(countDups)
-        displayBar(countDups, filepath)
-        #countSortedDups = countDuplicates(newDict)
-        #displayBar(countSortedDups) # sorted based on hash value, not on number of dups
+        displayBar(countDups, outpath)
 
 def displayBar(data, filepath):
     names = list(data.keys())
@@ -74,10 +69,8 @@ def displayBar(data, filepath):
     values = list(data.values())
     fig, ax = plt.subplots(figsize=(20,10))
     plt.xlabel('Key fastaMd5')
-    plt.ylabel('Value dupiclates')
+    plt.ylabel('Value duplicates')
     plt.title(filepath)
-#tick_label does the some work as plt.xticks()
-    #plt.bar(range(100),values,tick_label=shortName)
     plt.bar(range(len(data)),values,tick_label=shortName)
     plt.savefig(filepath + '.png')
     plt.show()
@@ -88,8 +81,6 @@ def shortenName(list):
         tmp = n[:6]
         shortNameList.append(tmp)
     return shortNameList
-        
-
         
 def countDuplicates(d):
     out = []
@@ -105,10 +96,7 @@ def displayDictDataItems(d):
     for i,j in d.items():
         out += str(j['labelMd5']) + '\t' + str(j['fastaMd5']) + '\n'
     return out
-def saveFile(build):
-    fo = open('test-fasta-9-records.txt.out', 'w') #this saveFile is not working
-    fo.write("this is a test")
-    fo.close()
+
 def countLines(filepath):
     fo = open(filepath, 'r').readlines()
     return len(fo)
@@ -135,3 +123,4 @@ def displayFastaMd5(d):
 if __name__ == '__main__':
     main()
 
+# LAST EDITED: 11.18.2021

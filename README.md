@@ -46,3 +46,9 @@ README.md
 17) Automatize the analysis: create a function to process each chromosome with input as a list/array
 18) Create an html file with all the generated png images.
 
+## 11.18.2021
+### read-write-gb-fasta-coding-nucleotide-protein.py edited to fix last item processing
+19) When second to last line is hit, create dictObj with label, labelMd5 and labelFastaMd5 to be added to chromosome dictionary object
+20) cleaned extra lines of code that were commented out like sorting based on labelFastaMd5, save function that did not work, comments that are not current, extra blank lines.
+21) The paths filepath and outpath reflect the following folder structure: script at the root, input data outside the git project, output data text files outside git project, output data png inside the git project in OUTPUT folder or OUTPUT_FIGURES folder.
+

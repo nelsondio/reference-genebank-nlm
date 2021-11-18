@@ -78,7 +78,7 @@ def processBatch(tmp, fignumber, batch, filepath):
     y = list(tmp.values())
     plt.subplot(batch, 1, fignumber)
     fig = plt.subplots(figsize=(20,10))
-    plt.bar(x,y)
+    plt.bar(x,y)  ## HERE TO ADD IF Y IS MORE THAN 10 then print shortname only, else nothing
     plt.xlabel("xlabel")
     plt.ylabel("ylabel")
     plt.title(filepath+str(fignumber)+'.png')
